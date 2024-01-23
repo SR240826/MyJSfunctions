@@ -13,10 +13,6 @@ export class Player {
             y: Math.random() * (this.#canvas.height - this.size.height* 2) + 60,
         }
         this.color = color;
-        this.velocity = {
-            x: 0,
-            y: 0
-        }
     }
     draw() {
         this.#ctx.fillStyle = this.color;
