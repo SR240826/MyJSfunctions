@@ -1,3 +1,3 @@
 # MyJSfunctions
 
-I am using this function repeatedly
+I am using this function repeatedly.
