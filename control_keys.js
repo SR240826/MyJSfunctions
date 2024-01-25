@@ -1,7 +1,7 @@
 export class keys {
     // set the intended keys to control and velocity of controllable object    
 
-    constructor(left, right, up, down, velocityX, velocityY) {
+    constructor(left, right, up, down, player, velocityX, velocityY) {
         this.direction = {
             left: left,
             right: right,
@@ -14,11 +14,9 @@ export class keys {
             x: velocityX,
             y: velocityY
         }
-        this.keystatus = {
-            left: false,
-            right: false,
-            up: false,
-            down: false,
+        this.collision = {
+            coll_object: [],
+            player: player,
         }
     }
     
@@ -26,41 +24,56 @@ export class keys {
     control(event) {
         switch (event.key.toLowerCase()) {
             case (this.direction.left):
-                this.keystatus.left = true;
                 this.velocity.x = -1;
                 break;
             case (this.direction.right):
-                this.keystatus.right = true;
                 this.velocity.x = 1;
                 break;
             case (this.direction.up):
-                this.keystatus.up = true;
                 this.velocity.y = -1;
                 break;
             case (this.direction.down):
-                this.keystatus.down = true;
                 this.velocity.y = 1;
                 break;
         }
     }
 
-    //key up event
-    resetkey(e){
-        switch (e.key.toLowerCase()) {
-            case (this.direction.left):
-                this.keystatus.left = false;
-                break;
-            case (this.direction.right):
-                this.keystatus.right = false;
-                break;
-            case (this.direction.up):
-                this.keystatus.up = false;
-                break;
-            case (this.direction.down):
-                this.keystatus.down = false;
-                break;
+    checkCollision() {
+        const player = this.collision.player;
+        const obstacles = this.collision.coll_object;
+
+        for (let i = 0; i < obstacles.length; i++) {
+            const obstacle = obstacles[i];
+
+            if (
+                // Collision detection criteria
+                player.position.x < obstacle.position.x + obstacle.size.width &&
+                player.position.x + player.size.width > obstacle.position.x &&
+                player.position.y < obstacle.position.y + obstacle.size.height &&
+                player.position.y + player.size.height > obstacle.position.y
+            ) {
+                // update velocities based on the collision direction
+
+                // Horizontal collision
+                if (this.velocity.x > 0 && (player.position.x < (obstacle.position.x + player.size.width))) 
+                    this.velocity.x = 0; // Collided from the left, stop moving right
+                else if (this.velocity.x < 0 && (player.position.x < (obstacle.position.x + player.size.width)))
+                    this.velocity.x = -1; // enable to move left ONLY               
+                else if (this.velocity.x < 0 && player.position.x + player.size.width > obstacle.position.x) 
+                    this.velocity.x = 0; // Collided from the right, stop moving left
+                else if (this.velocity.x > 0 && player.position.x + player.size.width > obstacle.position.x) 
+                    this.velocity.x = 1; // enable move to right ONLY
+
+                // Vertical collision
+                if (this.velocity.y > 0 && player.position.y < obstacle.position.y)
+                    this.velocity.y = 0; // Collided from the top, stop moving down
+                else if (this.velocity.y < 0 && player.position.y < obstacle.position.y) 
+                    this.velocity.y = -1; // // enable move to up ONLY
+                else if (this.velocity.y < 0 && player.position.y + player.size.height > obstacle.position.y) 
+                    this.velocity.y = 0; // Collided from the bottom, stop moving up
+                else if (this.velocity.y > 0 && player.position.y + player.size.height > obstacle.position.y) 
+                    this.velocity.y = 1; //// enable move to down ONLY
+            }
         }
-        this.velocity.x = 0;
-        this.velocity.y = 0
     }
 }
