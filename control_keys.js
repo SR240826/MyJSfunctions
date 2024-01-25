@@ -1,16 +1,13 @@
 export class keys {
-    // set the intended keys to control and velocity of controllable object
-    #left;
-    #right;
-    #up;
-    #down;
-    
+    // set the intended keys to control and velocity of controllable object    
 
     constructor(left, right, up, down, velocityX, velocityY) {
-        this.#left = left;
-        this.#right = right;
-        this.#up = up;
-        this.#down = down;
+        this.direction = {
+            left: left,
+            right: right,
+            up: up,
+            down: down,
+        }
 
         // public or global variables that may need modification from outside
         this.velocity = {
@@ -28,21 +25,21 @@ export class keys {
     // keydown/key pressed event
     control(event) {
         switch (event.key.toLowerCase()) {
-            case (this.#left):
+            case (this.direction.left):
                 this.keystatus.left = true;
-                this.velocity.x -= 1;
+                this.velocity.x = -1;
                 break;
-            case (this.#right):
+            case (this.direction.right):
                 this.keystatus.right = true;
-                this.velocity.x += 1;
+                this.velocity.x = 1;
                 break;
-            case (this.#up):
+            case (this.direction.up):
                 this.keystatus.up = true;
-                this.velocity.y -= 1;
+                this.velocity.y = -1;
                 break;
-            case (this.#down):
+            case (this.direction.down):
                 this.keystatus.down = true;
-                this.velocity.y += 1;
+                this.velocity.y = 1;
                 break;
         }
     }
@@ -50,18 +47,20 @@ export class keys {
     //key up event
     resetkey(e){
         switch (e.key.toLowerCase()) {
-            case (this.#left):
-                controlkey.keystatus.left = false;
+            case (this.direction.left):
+                this.keystatus.left = false;
                 break;
-            case (this.#right):
-                controlkey.keystatus.right = false;
+            case (this.direction.right):
+                this.keystatus.right = false;
                 break;
-            case (this.#up):
-                controlkey.keystatus.up = false;
+            case (this.direction.up):
+                this.keystatus.up = false;
                 break;
-            case (this.#down):
-                controlkey.keystatus.down = false;
+            case (this.direction.down):
+                this.keystatus.down = false;
                 break;
         }
+        this.velocity.x = 0;
+        this.velocity.y = 0
     }
 }
