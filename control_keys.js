@@ -63,23 +63,23 @@ export class keys {
                 // update velocities based on the collision direction
 
                 // Horizontal collision
-                if (this.velocity.x > 0 && (player.position.x < obstacle.position.x + player.size.width)) 
+                if (this.velocity.x > 0 && (player.position.x < obstacle.position.x)) 
                     this.velocity.x = 0; // Collided from the left, stop moving right
-                else if (this.velocity.x < 0 && (player.position.x < obstacle.position.x + player.size.width))
+                else if (this.velocity.x < 0 && (player.position.x < obstacle.position.x))
                     this.velocity.x = -1; // enable to move left ONLY               
-                else if (this.velocity.x < 0 && (player.position.x + player.size.width > obstacle.position.x)) 
+                else if (this.velocity.x < 0 && (player.position.x > obstacle.position.x)) 
                     this.velocity.x = 0; // Collided from the right, stop moving left
-                else if (this.velocity.x > 0 && (player.position.x + player.size.width > obstacle.position.x)) 
+                else if (this.velocity.x > 0 && (player.position.x  > obstacle.position.x)) 
                     this.velocity.x = 1; // enable move to right ONLY
 
                 // Vertical collision
-                if (this.velocity.y > 0 && player.position.y < obstacle.position.y)
+                if (this.velocity.y > 0 && player.position.y < obstacle.position.y && player.position.x > obstacle.position.x)
                     this.velocity.y = 0; // Collided from the top, stop moving down
                 else if (this.velocity.y < 0 && player.position.y < obstacle.position.y) 
                     this.velocity.y = -1; // // enable move to up ONLY
-                else if (this.velocity.y < 0 && (player.position.y + player.size.height > obstacle.position.y)) 
+                else if (this.velocity.y < 0 && (player.position.y > obstacle.position.y)) 
                     this.velocity.y = 0; // Collided from the bottom, stop moving up
-                else if (this.velocity.y > 0 && (player.position.y + player.size.height > obstacle.position.y)) 
+                else if (this.velocity.y > 0 && (player.position.y  > obstacle.position.y)) 
                     this.velocity.y = 1; //// enable move to down ONLY
             }
         }

@@ -1,16 +1,16 @@
 export class Player {
     #canvas; // main canvas ID
     #ctx; // canvas.getContext('2d');
-    constructor(canvas, ctx, color) {
+    constructor(canvas, ctx, color, width, height) {
         this.#ctx = ctx;
         this.#canvas = canvas;
         this.size = {
-            width: this.#canvas.width/30,
-            height: this.#canvas.width/30
+            width: width,
+            height: height
         }
         this.position = {
-            x: Math.random() * (this.#canvas.width - this.size.width) + 5,
-            y: Math.random() * (this.#canvas.height - this.size.height* 2) + 60,
+            x: Math.random() * (this.#canvas.width - this.size.width),
+            y: Math.random() * (this.#canvas.height - this.size.height* 2),
         }
         this.color = color;
     }
@@ -29,8 +29,15 @@ export class Player {
         this.position.x += velocityX;
         this.position.y += velocityY;
     }
+    // This is for the change of spawn position to avoid overlap
+    updatePosition(pX, pY) {
+        this.draw();
+        this.position.x = pX;
+        this.position.y = pY;
+    }
 }
 
+// to create any image for static environment or background elements
 export class Image {
     #image;
     #cropStartX;
@@ -76,7 +83,7 @@ export class Image {
     }
     
     clone() {
-        // Create a new instance of the Image class
+        // Create a new instance of the Image class. Very useful to create and redefine as new array elements
         const clonedImage = new Image(
             this.#ctx,
             this.#image,
@@ -91,5 +98,12 @@ export class Image {
         );
 
         return clonedImage;
+    }
+    // This is for the change of spawn position to avoid overlap
+    update(px, py) {
+        this.draw();
+        this.position.x = px;
+        this.position.y = py;
+        
     }
 }
